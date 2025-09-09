@@ -1,0 +1,14 @@
+/Users/osipuzunan/Desktop/Calculator_C#/Calculator_C#/bin/Debug/net9.0/Calculator_C#
+/Users/osipuzunan/Desktop/Calculator_C#/Calculator_C#/bin/Debug/net9.0/Calculator_C#.deps.json
+/Users/osipuzunan/Desktop/Calculator_C#/Calculator_C#/bin/Debug/net9.0/Calculator_C#.runtimeconfig.json
+/Users/osipuzunan/Desktop/Calculator_C#/Calculator_C#/bin/Debug/net9.0/Calculator_C#.dll
+/Users/osipuzunan/Desktop/Calculator_C#/Calculator_C#/bin/Debug/net9.0/Calculator_C#.pdb
+/Users/osipuzunan/Desktop/Calculator_C#/Calculator_C#/obj/Debug/net9.0/Calculator_C#.GeneratedMSBuildEditorConfig.editorconfig
+/Users/osipuzunan/Desktop/Calculator_C#/Calculator_C#/obj/Debug/net9.0/Calculator_C#.AssemblyInfoInputs.cache
+/Users/osipuzunan/Desktop/Calculator_C#/Calculator_C#/obj/Debug/net9.0/Calculator_C#.AssemblyInfo.cs
+/Users/osipuzunan/Desktop/Calculator_C#/Calculator_C#/obj/Debug/net9.0/Calculator_C#.csproj.CoreCompileInputs.cache
+/Users/osipuzunan/Desktop/Calculator_C#/Calculator_C#/obj/Debug/net9.0/Calculator_C#.dll
+/Users/osipuzunan/Desktop/Calculator_C#/Calculator_C#/obj/Debug/net9.0/refint/Calculator_C#.dll
+/Users/osipuzunan/Desktop/Calculator_C#/Calculator_C#/obj/Debug/net9.0/Calculator_C#.pdb
+/Users/osipuzunan/Desktop/Calculator_C#/Calculator_C#/obj/Debug/net9.0/Calculator_C#.genruntimeconfig.cache
+/Users/osipuzunan/Desktop/Calculator_C#/Calculator_C#/obj/Debug/net9.0/ref/Calculator_C#.dll
