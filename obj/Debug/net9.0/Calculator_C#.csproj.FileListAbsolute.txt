@@ -12,3 +12,4 @@
 /Users/osipuzunan/Desktop/Calculator_C#/Calculator_C#/obj/Debug/net9.0/Calculator_C#.pdb
 /Users/osipuzunan/Desktop/Calculator_C#/Calculator_C#/obj/Debug/net9.0/Calculator_C#.genruntimeconfig.cache
 /Users/osipuzunan/Desktop/Calculator_C#/Calculator_C#/obj/Debug/net9.0/ref/Calculator_C#.dll
+/Users/osipuzunan/Desktop/Calculator_C#/Calculator_C#/obj/Debug/net9.0/Calculator_C#.sourcelink.json
