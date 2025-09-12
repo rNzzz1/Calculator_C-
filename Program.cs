@@ -1,158 +1,81 @@
 ﻿using System;
+using System.Data;
 
 namespace ClassicCalculator
 {
     class Calculator
     {
-        private double memory = 0;
+        double memory = 0, last = 0;
 
-        public double Add(double a, double b) => a + b;
-        public double Subtract(double a, double b) => a - b;
-        public double Multiply(double a, double b) => a * b;
-
-        public double Divide(double a, double b)
+        public void Process(string input)
         {
-            if (b == 0)
-                throw new DivideByZeroException("Деление на ноль невозможно.");
-            return a / b;
+            input = input.Replace(" ", "");
+            try
+            {
+                if (input.ToLower() == "mr")
+                {
+                    Console.WriteLine("Память: " + memory);
+                }
+                else if (input.ToLower() == "m+")
+                {
+                    memory += last;
+                    Console.WriteLine("Добавлено в память.");
+                }
+                else if (input.ToLower() == "m-")
+                {
+                    memory -= last;
+                    Console.WriteLine("Вычтено из памяти.");
+                }
+                else if (input.StartsWith("1/"))
+                {
+                    double x = Eval(input.Substring(2));
+                    last = 1 / x;
+                    Console.WriteLine("Результат: " + last);
+                }
+                else if (input.StartsWith("sqrt"))
+                {
+                    double x = Eval(input.Substring(4));
+                    if (x < 0) throw new Exception("Отрицательное число.");
+                    last = Math.Sqrt(x);
+                    Console.WriteLine("Результат: " + last);
+                }
+                else if (input.EndsWith("^2"))
+                {
+                    double x = Eval(input.Substring(0, input.Length - 2));
+                    last = x * x;
+                    Console.WriteLine("Результат: " + last);
+                }
+                else
+                {
+                    last = Eval(input);
+                    Console.WriteLine("Результат: " + last);
+                }
+            }
+            catch
+            {
+                Console.WriteLine("Ошибка: неправильный ввод или операция.");
+            }
         }
 
-        public double Modulus(double a, double b) => a % b;
-        public double Reciprocal(double a)
+        double Eval(string expr)
         {
-            if (a == 0)
-                throw new DivideByZeroException("Нельзя найти обратное для нуля.");
-            return 1 / a;
+            return Convert.ToDouble(new DataTable().Compute(expr, ""));
         }
-
-        public double Square(double a) => a * a;
-        public double SquareRoot(double a)
-        {
-            if (a < 0)
-                throw new ArgumentException("Корень квадратный из отрицательного числа невозможен.");
-            return Math.Sqrt(a);
-        }
-
-        public void MemoryAdd(double a) => memory += a;
-        public void MemorySubtract(double a) => memory -= a;
-        public double MemoryRecall() => memory;
     }
 
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
-            Calculator calc = new Calculator();
-            string input;
-            double num1, num2, result = 0;
-            string operation;
-            bool running = true;
-
-            Console.WriteLine("Классический калькулятор на C#");
-            Console.WriteLine("Операции: +, -, *, /, %, 1/x, x^2, sqrt, M+, M-, MR");
-            Console.WriteLine("Для выхода введите exit");
-
-            while (running)
+            var calc = new Calculator();
+            Console.WriteLine("Введите выражение:");
+            while (true)
             {
-                try
-                {
-                    Console.Write("Введите первое число: ");
-                    input = Console.ReadLine();
-                    if (input.ToLower() == "exit") break;
-                    num1 = Convert.ToDouble(input);
-
-                    Console.Write("Введите операцию: ");
-                    operation = Console.ReadLine();
-
-                    if (operation.ToLower() == "exit") break;
-
-                    if (operation == "M+" || operation == "M-" || operation == "MR")
-                    {
-                        switch (operation)
-                        {
-                            case "M+":
-                                calc.MemoryAdd(num1);
-                                Console.WriteLine("Добавлено в память.");
-                                break;
-                            case "M-":
-                                calc.MemorySubtract(num1);
-                                Console.WriteLine("Вычтено из памяти.");
-                                break;
-                            case "MR":
-                                result = calc.MemoryRecall();
-                                Console.WriteLine("Память: " + result);
-                                break;
-                        }
-                    }
-                    else if (operation == "1/x" || operation == "x^2" || operation.ToLower() == "sqrt")
-                    {
-                        switch (operation)
-                        {
-                            case "1/x":
-                                result = calc.Reciprocal(num1);
-                                Console.WriteLine("Результат: " + result);
-                                break;
-                            case "x^2":
-                                result = calc.Square(num1);
-                                Console.WriteLine("Результат: " + result);
-                                break;
-                            case "sqrt":
-                                result = calc.SquareRoot(num1);
-                                Console.WriteLine("Результат: " + result);
-                                break;
-                        }
-                    }
-                    else
-                    {
-                        Console.Write("Введите второе число: ");
-                        input = Console.ReadLine();
-                        if (input.ToLower() == "exit") break;
-                        num2 = Convert.ToDouble(input);
-
-                        switch (operation)
-                        {
-                            case "+":
-                                result = calc.Add(num1, num2);
-                                break;
-                            case "-":
-                                result = calc.Subtract(num1, num2);
-                                break;
-                            case "*":
-                                result = calc.Multiply(num1, num2);
-                                break;
-                            case "/":
-                                result = calc.Divide(num1, num2);
-                                break;
-                            case "%":
-                                result = calc.Modulus(num1, num2);
-                                break;
-                            default:
-                                Console.WriteLine("Неверная операция.");
-                                continue;
-                        }
-                        Console.WriteLine("Результат: " + result);
-                    }
-                }
-                catch (FormatException)
-                {
-                    Console.WriteLine("Ошибка формата ввода. Введите число.");
-                }
-                catch (DivideByZeroException e)
-                {
-                    Console.WriteLine("Ошибка: " + e.Message);
-                }
-                catch (ArgumentException e)
-                {
-                    Console.WriteLine("Ошибка: " + e.Message);
-                }
-                catch (Exception)
-                {
-                    Console.WriteLine("Произошла неизвестная ошибка.");
-                }
+                Console.Write("");
+                var input = Console.ReadLine();
+                if (input == null || input.ToLower() == "exit") break;
+                calc.Process(input);
             }
-
-            Console.WriteLine("Работа калькулятора завершена.");
         }
     }
 }
-
