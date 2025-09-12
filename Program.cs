@@ -1,81 +1,100 @@
 ﻿using System;
-using System.Data;
 
-namespace ClassicCalculator
+class Calculator
 {
-    class Calculator
-    {
-        double memory = 0, last = 0;
+    static double memory = 0;
+    static double current = 0;
 
-        public void Process(string input)
+    static void Main()
+    {
+        Console.WriteLine("Введите выражение (например 1 + 1) или exit для выхода.");
+        while (true)
         {
-            input = input.Replace(" ", "");
+            Console.Write("> ");
+            string? input = Console.ReadLine();
+            if (input == null) continue;
+            input = input.Trim();
+
+            if (input.ToLower() == "exit") break;
+
             try
             {
-                if (input.ToLower() == "mr")
-                {
-                    Console.WriteLine("Память: " + memory);
-                }
-                else if (input.ToLower() == "m+")
-                {
-                    memory += last;
-                    Console.WriteLine("Добавлено в память.");
-                }
-                else if (input.ToLower() == "m-")
-                {
-                    memory -= last;
-                    Console.WriteLine("Вычтено из памяти.");
-                }
-                else if (input.StartsWith("1/"))
-                {
-                    double x = Eval(input.Substring(2));
-                    last = 1 / x;
-                    Console.WriteLine("Результат: " + last);
-                }
-                else if (input.StartsWith("sqrt"))
-                {
-                    double x = Eval(input.Substring(4));
-                    if (x < 0) throw new Exception("Отрицательное число.");
-                    last = Math.Sqrt(x);
-                    Console.WriteLine("Результат: " + last);
-                }
-                else if (input.EndsWith("^2"))
-                {
-                    double x = Eval(input.Substring(0, input.Length - 2));
-                    last = x * x;
-                    Console.WriteLine("Результат: " + last);
-                }
-                else
-                {
-                    last = Eval(input);
-                    Console.WriteLine("Результат: " + last);
-                }
+                ProcessInput(input);
             }
-            catch
+            catch (Exception ex)
             {
-                Console.WriteLine("Ошибка: неправильный ввод или операция.");
+                Console.WriteLine("Ошибка: " + ex.Message);
             }
-        }
-
-        double Eval(string expr)
-        {
-            return Convert.ToDouble(new DataTable().Compute(expr, ""));
         }
     }
 
-    class Program
+    static void ProcessInput(string input)
     {
-        static void Main()
+        string[] parts = input.Split(' ');
+        if (parts.Length == 3) // Бинарные операции
         {
-            var calc = new Calculator();
-            Console.WriteLine("Введите выражение:");
-            while (true)
-            {
-                Console.Write("");
-                var input = Console.ReadLine();
-                if (input == null || input.ToLower() == "exit") break;
-                calc.Process(input);
-            }
+            double num1 = ParseNumber(parts[0]);
+            string op = parts[1];
+            double num2 = ParseNumber(parts[2]);
+            current = CalculateBinary(num1, op, num2);
+            Console.WriteLine("Результат: " + current);
+        }
+        else if (parts.Length == 2) // Унарные операции
+        {
+            string op = parts[0];
+            double num = ParseNumber(parts[1]);
+            current = CalculateUnary(op, num);
+            Console.WriteLine("Результат: " + current);
+        }
+        else if (parts.Length == 1) // Память
+        {
+            string op = parts[0];
+            HandleMemory(op);
+        }
+        else
+        {
+            throw new Exception("Неверный формат ввода.");
+        }
+    }
+
+    static double ParseNumber(string s)
+    {
+        if (double.TryParse(s, out double num)) return num;
+        throw new Exception("Неверное число: " + s);
+    }
+
+    static double CalculateBinary(double a, string op, double b)
+    {
+        switch (op)
+        {
+            case "+": return a + b;
+            case "-": return a - b;
+            case "*": return a * b;
+            case "/": if (b == 0) throw new Exception("Деление на ноль."); return a / b;
+            case "%": return a % b;
+            default: throw new Exception("Неизвестная операция: " + op);
+        }
+    }
+
+    static double CalculateUnary(string op, double x)
+    {
+        switch (op)
+        {
+            case "1/x": if (x == 0) throw new Exception("Деление на ноль."); return 1 / x;
+            case "x^2": return x * x;
+            case "sqrt": if (x < 0) throw new Exception("Корень из отрицательного."); return Math.Sqrt(x);
+            default: throw new Exception("Неизвестная операция: " + op);
+        }
+    }
+
+    static void HandleMemory(string op)
+    {
+        switch (op)
+        {
+            case "M+": memory += current; Console.WriteLine("Добавлено в память: " + memory); break;
+            case "M-": memory -= current; Console.WriteLine("Вычтено из памяти: " + memory); break;
+            case "MR": Console.WriteLine("Память: " + memory); break;
+            default: throw new Exception("Неизвестная операция памяти: " + op);
         }
     }
 }
